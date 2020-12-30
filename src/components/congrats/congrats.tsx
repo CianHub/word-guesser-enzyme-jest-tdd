@@ -4,11 +4,11 @@ interface Props {
   success: boolean;
 }
 export const Congrats: React.FC<Props> = ({ success }) => {
-  return (
-    <div data-test="component-congrats">
+  return success ? (
+    <div data-test="component-congrats" className="alert alert-success">
       <span data-test="component-congrats-message">
-        {success ? 'Congrats' : ''}
+        {success ? 'You got it!' : ''}
       </span>
     </div>
-  );
+  ) : null;
 };

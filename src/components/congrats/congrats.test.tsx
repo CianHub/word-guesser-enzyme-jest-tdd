@@ -12,18 +12,12 @@ test('it should render', () => {
 
 test('renders no text when success prop is false', () => {
   const wrapper = setup({ success: false });
-  const text = findByTestAttr(wrapper, 'congrats').text();
-  expect(text).toBe('');
+  const text = findByTestAttr(wrapper, 'congrats');
+  expect(text.length).toBe(0);
 });
 
 test('renders non-empty message when success prop is true', () => {
   const wrapper = setup({ success: true });
   const text = findByTestAttr(wrapper, 'congrats').text();
-  expect(text).toBe('Congrats');
-});
-
-test('renders non-empty message when success prop is true', () => {
-  const wrapper = setup({ success: true });
-  const text = findByTestAttr(wrapper, 'congrats').text();
-  expect(text).toBe('Congrats');
+  expect(text).toBe('You got it!');
 });
