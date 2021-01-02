@@ -2,9 +2,11 @@ import Input from './Input';
 import { findByTestAttr, storeFactory } from '../../../test/test-utils';
 import { shallow, ShallowWrapper } from 'enzyme';
 
-const setup = (initialState = {}) => {
+const setup = (initialState = { success: false }) => {
   const store = storeFactory(initialState);
-  const wrapper = shallow(<Input store={store} />)
+  const wrapper = shallow(
+    <Input store={store} success={initialState.success} />
+  )
     .dive()
     .dive();
   return wrapper;
@@ -39,7 +41,32 @@ describe('render', () => {
   });
 
   describe('word has  been guessed', () => {
-    test('do not render component', () => {});
+    let wrapper: ShallowWrapper<
+      Readonly<{}> &
+        Readonly<{
+          children?: React.ReactNode;
+        }>,
+      Readonly<{}>,
+      React.Component<{}, {}, any>
+    >;
+
+    beforeEach(() => {
+      wrapper = setup({ success: true });
+    });
+
+    test('render component', () => {
+      const comp = findByTestAttr(wrapper, 'input');
+      expect(comp.length).toBe(1);
+    });
+
+    test('dont render input element', () => {
+      const comp = findByTestAttr(wrapper, 'input-element');
+      expect(comp.length).toBe(0);
+    });
+    test('dont render submit button', () => {
+      const comp = findByTestAttr(wrapper, 'submit-button');
+      expect(comp.length).toBe(0);
+    });
   });
 });
 
