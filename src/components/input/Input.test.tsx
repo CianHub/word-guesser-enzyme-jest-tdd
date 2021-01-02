@@ -3,10 +3,8 @@ import { findByTestAttr, storeFactory } from '../../../test/test-utils';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 const setup = (initialState = { success: false }) => {
-  const store = storeFactory(initialState);
-  const wrapper = shallow(
-    <Input store={store} success={initialState.success} />
-  )
+  const store = storeFactory();
+  const wrapper = shallow(<Input store={store} {...initialState} />)
     .dive()
     .dive();
   return wrapper;

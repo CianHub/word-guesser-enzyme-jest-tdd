@@ -3,12 +3,12 @@ import { successReducer } from './successReducer';
 
 test('returns initial state of false if no action passed', () => {
   const newState = successReducer();
-  expect(newState).toBeFalsy();
+  expect(newState.success).toBeFalsy();
 });
 
 test('returns state of true if CORRECT_GUESS action passed', () => {
   const newState = successReducer(undefined, {
     type: actionTypes.CORRECT_GUESS,
   });
-  expect(newState).toBeTruthy();
+  expect(newState.success).toBeTruthy();
 });

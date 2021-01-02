@@ -12,6 +12,6 @@ export const findByTestAttr = (
   React.Component<{}, {}, any>
 > => wrapper.find(`[data-test='component-${val}']`);
 
-export const storeFactory = (initialState: {}) => {
-  return createStore(rootReducer, initialState);
+export const storeFactory = () => {
+  return createStore(rootReducer);
 };

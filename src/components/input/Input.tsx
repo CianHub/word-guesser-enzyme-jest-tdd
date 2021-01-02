@@ -6,7 +6,9 @@ import { Action, CombinedState, Store } from 'redux';
 interface Props {
   store?: Store<
     CombinedState<{
-      successReducer: boolean;
+      successReducer: {
+        success: boolean;
+      };
     }>,
     Action<any>
   >;
