@@ -1,17 +1,103 @@
+import { Action, CombinedState, Store } from 'redux';
 import { storeFactory } from '../test/test-utils';
 
-import { guessWord } from './actions';
+import { actionTypes, guessWord } from './actions';
 
 describe('guessWord action dispatcher', () => {
-  describe('no guessed words', () => {
-    test('updates state correctly for unsuccessful guess', () => {});
+  const secretWord = 'party';
+  const unsuccessfulGuess = 'train';
 
-    test('updates state correctly for successful guess', () => {});
+  describe('no guessed words', () => {
+    let store: Store<unknown>;
+
+    beforeEach(() => {
+      store = storeFactory();
+      store.dispatch({ type: actionTypes.SECRET_WORD, payload: secretWord });
+    });
+
+    test('updates state correctly for unsuccessful guess', () => {
+      guessWord(unsuccessfulGuess, store);
+
+      const newState = store.getState();
+      const expectedState = {
+        secretWordReducer: { secretWord },
+        successReducer: { success: false },
+        guessWordReducer: {
+          guessedWords: [
+            { guessedWord: unsuccessfulGuess, letterMatchCount: 3 },
+          ],
+        },
+      };
+
+      expect(newState).toEqual(expectedState);
+    });
+
+    test('updates state correctly for successful guess', () => {
+      guessWord(secretWord, store);
+
+      const newState = store.getState();
+      const expectedState = {
+        secretWordReducer: { secretWord },
+        successReducer: { success: true },
+        guessWordReducer: {
+          guessedWords: [
+            { guessedWord: secretWord, letterMatchCount: secretWord.length },
+          ],
+        },
+      };
+
+      expect(newState).toEqual(expectedState);
+    });
   });
 
   describe('some guessed words', () => {
-    test('updates state correctly for unsuccessful guess', () => {});
+    const guessedWords = [{ guessedWord: 'agile', letterMatchCount: 1 }];
 
-    test('updates state correctly for successful guess', () => {});
+    let store: Store<unknown>;
+
+    beforeEach(() => {
+      store = storeFactory();
+      store.dispatch({ type: actionTypes.SECRET_WORD, payload: secretWord });
+      store.dispatch({
+        type: actionTypes.GUESS_WORD,
+        payload: { guessedWord: 'agile', letterMatchCount: 1 },
+      });
+    });
+
+    test('updates state correctly for unsuccessful guess', () => {
+      guessWord(unsuccessfulGuess, store);
+
+      const newState = store.getState();
+      const expectedState = {
+        secretWordReducer: { secretWord },
+        successReducer: { success: false },
+        guessWordReducer: {
+          guessedWords: [
+            ...guessedWords,
+            { guessedWord: unsuccessfulGuess, letterMatchCount: 3 },
+          ],
+        },
+      };
+
+      expect(newState).toEqual(expectedState);
+    });
+
+    test('updates state correctly for successful guess', () => {
+      guessWord(secretWord, store);
+
+      const newState = store.getState();
+      const expectedState = {
+        secretWordReducer: { secretWord },
+        successReducer: { success: true },
+        guessWordReducer: {
+          guessedWords: [
+            ...guessedWords,
+            { guessedWord: secretWord, letterMatchCount: secretWord.length },
+          ],
+        },
+      };
+
+      expect(newState).toEqual(expectedState);
+    });
   });
 });

@@ -24,6 +24,7 @@ export const storeFactory = (): Store<
     successReducer: {
       success: boolean;
     };
+    guessWordReducer: never;
   }>,
   Action<any>
 > & {
