@@ -12,7 +12,10 @@ describe('guessWord action dispatcher', () => {
 
     beforeEach(() => {
       store = storeFactory();
-      store.dispatch({ type: actionTypes.SECRET_WORD, payload: secretWord });
+      store.dispatch({
+        type: actionTypes.SET_SECRET_WORD,
+        payload: secretWord,
+      });
     });
 
     test('updates state correctly for unsuccessful guess', () => {
@@ -57,7 +60,10 @@ describe('guessWord action dispatcher', () => {
 
     beforeEach(() => {
       store = storeFactory();
-      store.dispatch({ type: actionTypes.SECRET_WORD, payload: secretWord });
+      store.dispatch({
+        type: actionTypes.SET_SECRET_WORD,
+        payload: secretWord,
+      });
       store.dispatch({
         type: actionTypes.GUESS_WORD,
         payload: { guessedWord: 'agile', letterMatchCount: 1 },

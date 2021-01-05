@@ -24,7 +24,10 @@ export const storeFactory = (): Store<
     successReducer: {
       success: boolean;
     };
-    guessWordReducer: never;
+    guessWordReducer: {
+      guessWords: { guessWord: string; letterMatchCount: number }[];
+    };
+    secretWordReducer: { secretWord: string };
   }>,
   Action<any>
 > & {

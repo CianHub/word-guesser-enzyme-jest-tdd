@@ -1,10 +1,13 @@
 import { Store } from 'redux';
 import { getLetterMatchCount } from '../helpers';
 
+import axios from 'axios';
+import { Dispatch } from 'react';
+
 export const actionTypes = {
   CORRECT_GUESS: 'CORRECT_GUESS',
   GUESS_WORD: 'GUESS_WORD',
-  SECRET_WORD: 'SECRET_WORD',
+  SET_SECRET_WORD: 'SET_SECRET_WORD',
 };
 
 export interface Action {
@@ -28,4 +31,12 @@ export const guessWord = (guessedWord: string, store: Store) => {
   if (guessedWord === secretWord) {
     store.dispatch({ type: actionTypes.CORRECT_GUESS });
   }
+};
+
+export const getSecretWord = (store: Store) => {
+  return axios
+    .get('https://random-word-api.herokuapp.com/home/word?number=1')
+    .then((res) =>
+      store.dispatch({ type: actionTypes.SET_SECRET_WORD, payload: res.data })
+    );
 };

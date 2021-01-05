@@ -5,7 +5,7 @@ export const secretWordReducer = (
   action: Action
 ) => {
   switch (action.type) {
-    case actionTypes.SECRET_WORD:
+    case actionTypes.SET_SECRET_WORD:
       return { secretWord: action.payload };
     default:
       return state;
