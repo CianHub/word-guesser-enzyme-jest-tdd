@@ -31,6 +31,26 @@ describe('render', () => {
       const comp = findByTestAttr(wrapper, 'submit-button');
       expect(comp.length).toBe(1);
     });
+
+    test('call dispatch onClick with input value', () => {
+      const store = storeFactory();
+      store.dispatch({ type: actionTypes.CORRECT_GUESS, payload: false });
+      const spyClick = jest.spyOn(store, 'dispatch');
+
+      const wrapper = shallow(<Input store={store} />)
+        .dive()
+        .dive();
+
+      const comp = findByTestAttr(wrapper, 'input-element');
+      comp.simulate('change', { target: { value: 'test' } });
+
+      const button = findByTestAttr(wrapper, 'submit-button');
+      button.simulate('click');
+      expect(spyClick).toHaveBeenCalledWith({
+        type: actionTypes.GUESS_WORD,
+        payload: 'test',
+      });
+    });
   });
 
   describe('word has  been guessed', () => {
