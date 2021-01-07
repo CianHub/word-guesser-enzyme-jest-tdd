@@ -1,10 +1,12 @@
 import Input from './Input';
 import { findByTestAttr, storeFactory } from '../../../test/test-utils';
 import { shallow, ShallowWrapper } from 'enzyme';
+import { actionTypes } from '../../actions';
 
-const setup = (initialState = { success: false }) => {
+const setup = (initialState: boolean = false) => {
   const store = storeFactory();
-  const wrapper = shallow(<Input store={store} {...initialState} />)
+  store.dispatch({ type: actionTypes.CORRECT_GUESS, payload: initialState });
+  const wrapper = shallow(<Input store={store} />)
     .dive()
     .dive();
   return wrapper;
@@ -12,14 +14,7 @@ const setup = (initialState = { success: false }) => {
 
 describe('render', () => {
   describe('word has not been guessed', () => {
-    let wrapper: ShallowWrapper<
-      Readonly<{}> &
-        Readonly<{
-          children?: React.ReactNode;
-        }>,
-      Readonly<{}>,
-      React.Component<{}, {}, any>
-    >;
+    let wrapper: ShallowWrapper;
 
     beforeEach(() => {
       wrapper = setup();
@@ -49,7 +44,7 @@ describe('render', () => {
     >;
 
     beforeEach(() => {
-      wrapper = setup({ success: true });
+      wrapper = setup(true);
     });
 
     test('render component', () => {
@@ -67,5 +62,3 @@ describe('render', () => {
     });
   });
 });
-
-describe('state updates', () => {});

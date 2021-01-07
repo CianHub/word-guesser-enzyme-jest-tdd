@@ -2,11 +2,11 @@ import { actionTypes, Action } from '../actions';
 
 export const successReducer = (
   state = { success: false },
-  action?: Action
+  action?: { type: string; payload: boolean }
 ): { success: boolean } => {
   switch (action?.type) {
     case actionTypes.CORRECT_GUESS:
-      return { success: true };
+      return { success: action.payload };
     default:
       return state;
   }

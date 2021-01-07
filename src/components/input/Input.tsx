@@ -9,14 +9,18 @@ interface Props {
       successReducer: {
         success: boolean;
       };
+      guessWordReducer: {
+        guessWords: { guessWord: string; letterMatchCount: number }[];
+      };
+      secretWordReducer: { secretWord: string };
     }>,
     Action<any>
   >;
-  success: boolean;
 }
 
-const Input: React.FC<Props> = ({ success }) => {
-  const contents = success ? null : (
+const Input: React.FC<Props> = ({ store }) => {
+  const state = store?.getState();
+  const contents = state?.successReducer.success ? null : (
     <form className="form-inline">
       <input
         data-test="component-input-element"

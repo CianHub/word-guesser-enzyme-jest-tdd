@@ -2,7 +2,6 @@ import { Store } from 'redux';
 import { getLetterMatchCount } from '../helpers';
 
 import axios from 'axios';
-import { Dispatch } from 'react';
 
 export const actionTypes = {
   CORRECT_GUESS: 'CORRECT_GUESS',
@@ -29,7 +28,7 @@ export const guessWord = (guessedWord: string, store: Store) => {
   });
 
   if (guessedWord === secretWord) {
-    store.dispatch({ type: actionTypes.CORRECT_GUESS });
+    store.dispatch({ type: actionTypes.CORRECT_GUESS, payload: true });
   }
 };
 
