@@ -11,7 +11,7 @@ describe('moxios', () => {
   });
 
   test('getSecret word will call setSecretWord when it gets an axios response', async () => {
-    const secretWord = 'party';
+    const secretWord = ['party'];
 
     moxios.wait(() => {
       const req = moxios.requests.mostRecent();
@@ -25,6 +25,6 @@ describe('moxios', () => {
 
     await getSecretWord(mockSetSecretWord);
 
-    expect(mockSetSecretWord).toHaveBeenCalledWith(secretWord);
+    expect(mockSetSecretWord).toHaveBeenCalledWith(secretWord[0]);
   });
 });

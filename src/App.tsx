@@ -3,6 +3,7 @@ import React from 'react';
 import { GuessedWords } from './components/guessedWords/GuessedWords';
 import { Congrats } from './components/congrats/congrats';
 import hookActions from './actions/hookActions';
+import Input from './components/input/Input';
 
 const reducer = (
   state: { secretWord: string },
@@ -31,6 +32,7 @@ const App: React.FC = () => {
   return (
     <div className="container" data-test="component-app">
       <h1>Word Guesser</h1>
+      <Input secretWord={state.secretWord} />
     </div>
   );
 };
