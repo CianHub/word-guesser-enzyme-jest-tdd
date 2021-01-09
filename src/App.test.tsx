@@ -1,12 +1,26 @@
 import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { shallow, ShallowWrapper } from 'enzyme';
 
 import App from './App';
+import { findByTestAttr } from '../test/test-utils';
 
-Enzyme.configure({ adapter: new Adapter() });
+const setup = (): ShallowWrapper<
+  any,
+  Readonly<{}>,
+  React.Component<{}, {}, any>
+> => {
+  return shallow(<App />);
+};
 
-test('renders learn react link', () => {
-  const comp = shallow(<App />);
-  expect(comp).toBeTruthy();
+describe('App', () => {
+  let wrapper: ShallowWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
+
+  beforeEach(() => {
+    wrapper = setup();
+  });
+
+  test('renders without crashing', () => {
+    const component = findByTestAttr(wrapper, 'app');
+    expect(component.length).toBe(1);
+  });
 });

@@ -4,12 +4,8 @@ import { GuessedWords } from './components/guessedWords/GuessedWords';
 import { Congrats } from './components/congrats/congrats';
 
 const App: React.FC = () => (
-  <div className="container">
+  <div className="container" data-test="component-app">
     <h1>Word Guesser</h1>
-    <Congrats success={false} />
-    <GuessedWords
-      guessedWords={[{ guessedWord: 'train', letterMatchCount: 2 }]}
-    />
   </div>
 );
 
