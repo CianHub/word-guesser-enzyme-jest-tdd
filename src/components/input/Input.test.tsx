@@ -23,8 +23,13 @@ describe('Input', () => {
 });
 
 describe('state controlled input element', () => {
+  let mockSetCurrentGuess: jest.Mock<any, any>;
+
+  beforeEach(() => {
+    mockSetCurrentGuess = jest.fn();
+  });
+
   test('state updates with value of input upon change', () => {
-    const mockSetCurrentGuess = jest.fn();
     React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
 
     let wrapper = setup();
@@ -37,7 +42,6 @@ describe('state controlled input element', () => {
   });
 
   test('prevent default and state updates are called onsubmit', () => {
-    const mockSetCurrentGuess = jest.fn();
     React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
 
     let wrapper = setup();

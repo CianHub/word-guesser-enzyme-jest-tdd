@@ -11,7 +11,7 @@ const Input: React.FC<Props> = ({ secretWord }) => {
     e.preventDefault();
     setCurrentGuess('');
 
-    //TODO update geussedWords context
+    //TODO update guessedWords context
     //TODO check if word === secretWord and update success context if so
   };
 
