@@ -25,8 +25,8 @@ const App: React.FC = () => {
     dispatch({ type: 'setSecretWord', payload: secretWord });
 
   React.useEffect(() => {
-    hookActions.getSecretWord(setSecretWord), [];
-  });
+    hookActions.getSecretWord(setSecretWord);
+  }, []);
 
   return (
     <div className="container" data-test="component-app">
