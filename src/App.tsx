@@ -29,11 +29,17 @@ const App: React.FC = () => {
     hookActions.getSecretWord(setSecretWord);
   }, []);
 
-  return (
+  return state.secretWord.length > 0 ? (
     <div className="container" data-test="component-app">
       <h1>Word Guesser</h1>
       <Input secretWord={state.secretWord} />
     </div>
+  ) : (
+    <div
+      className="spinner-border"
+      role="status"
+      data-test="component-spinner"
+    ></div>
   );
 };
 

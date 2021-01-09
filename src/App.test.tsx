@@ -6,13 +6,14 @@ import { findByTestAttr } from '../test/test-utils';
 import hookActions from './actions/hookActions';
 const mockGetSecretWord = jest.fn();
 
-const setup = (): ReactWrapper<
-  any,
-  Readonly<{}>,
-  React.Component<{}, {}, any>
-> => {
+const setup = (
+  secretWord: string = 'party'
+): ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>> => {
   mockGetSecretWord.mockClear();
   hookActions.getSecretWord = mockGetSecretWord;
+
+  const mockUseReducer = jest.fn().mockReturnValue([{ secretWord }, jest.fn()]);
+  React.useReducer = mockUseReducer;
   return mount(<App />);
 };
 
@@ -42,5 +43,37 @@ describe('getSecretWordCalls', () => {
 
     wrapper.setProps({});
     expect(mockGetSecretWord).not.toHaveBeenCalled();
+  });
+});
+
+describe('when secretWord is not empty', () => {
+  let wrapper: ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
+
+  beforeEach(() => {
+    wrapper = setup('party');
+  });
+
+  test('renders app not spinner', () => {
+    const component = wrapper.find(`[data-test='component-app']`);
+    expect(component.exists()).toBeTruthy();
+
+    const spinner = wrapper.find(`[data-test='component-spinner']`);
+    expect(spinner.exists()).toBeFalsy();
+  });
+});
+
+describe('when secretWord is empty', () => {
+  let wrapper: ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
+
+  beforeEach(() => {
+    wrapper = setup('');
+  });
+
+  test('renders spinner not app', () => {
+    const component = wrapper.find(`[data-test='component-app']`);
+    expect(component.exists()).toBeFalsy();
+
+    const spinner = wrapper.find(`[data-test='component-spinner']`);
+    expect(spinner.exists()).toBeTruthy();
   });
 });
