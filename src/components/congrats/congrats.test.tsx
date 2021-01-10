@@ -1,23 +1,48 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { Congrats } from './congrats';
 import { findByTestAttr } from '../../../test/test-utils';
+import LanguageContext from '../../context/languageContext';
+import strings, { languageStrings } from '../../helpers/strings';
 
-const setup = (props: { success: boolean }) => shallow(<Congrats {...props} />);
+const setup = (testValues: { success: boolean; language: string }) => {
+  testValues.language = testValues.language || 'en';
+  testValues.success = testValues.success || false;
+
+  return mount(
+    <LanguageContext.Provider value={testValues.language}>
+      <Congrats success={testValues.success} />
+    </LanguageContext.Provider>
+  );
+};
 
 test('it should render', () => {
-  const comp = setup({ success: true });
+  const comp = setup({ success: true, language: 'en' });
   expect(comp).toBeTruthy();
 });
 
 test('renders no text when success prop is false', () => {
-  const wrapper = setup({ success: false });
-  const text = findByTestAttr(wrapper, 'congrats');
+  const wrapper = setup({ success: false, language: 'en' });
+  const text = wrapper.find(`[data-test='component-congrats']`);
   expect(text.length).toBe(0);
 });
 
 test('renders non-empty message when success prop is true', () => {
-  const wrapper = setup({ success: true });
-  const text = findByTestAttr(wrapper, 'congrats').text();
-  expect(text).toBe('You got it!');
+  const wrapper = setup({ success: true, language: 'en' });
+  const text = wrapper.find(`[data-test='component-congrats']`).text();
+  expect(text).toBe(languageStrings.en.congrats);
+});
+
+describe('languagePicker integration', () => {
+  test('renders congrats string in en', () => {
+    const comp = setup({ success: true, language: 'en' });
+    const text = comp.find(`[data-test='component-congrats']`).text();
+    expect(text).toBe(languageStrings.en.congrats);
+  });
+
+  test('renders congrats string in emoji', () => {
+    const comp = setup({ success: true, language: 'emoji' });
+    const text = comp.find(`[data-test='component-congrats']`).text();
+    expect(text).toBe(languageStrings.emoji.congrats);
+  });
 });

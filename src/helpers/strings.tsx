@@ -8,7 +8,11 @@ interface Language {
   matchingLettersColumnHeader?: string;
 }
 
-const languageStrings: { en: Language; emoji: Language; orc: Language } = {
+export const languageStrings: {
+  en: Language;
+  emoji: Language;
+  orc: Language;
+} = {
   en: {
     congrats: 'Congratulations! You guessed the word!',
     submit: 'Submit',
@@ -27,6 +31,7 @@ const languageStrings: { en: Language; emoji: Language; orc: Language } = {
     guessColumnHeader: '🤷‍',
     matchingLettersColumnHeader: '✅',
   },
+  orc: {},
 };
 
 function getStringByLanguage(
