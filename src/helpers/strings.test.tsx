@@ -8,20 +8,47 @@ const testStrings = {
   orc: {},
 };
 
-test('gets correct string for english', () => {
-  const string = getStringByLanguage('en', 'submit', testStrings);
+describe('language string test', () => {
+  const mockWarn = jest.fn();
+  let originalWarn: () => void;
 
-  expect(string).toBe('submit');
-});
+  beforeEach(() => {
+    originalWarn = console.warn;
+    console.warn = mockWarn;
+  });
 
-test('gets correct string for emoji', () => {
-  const string = getStringByLanguage('emoji', 'submit', testStrings);
+  afterEach(() => {
+    console.warn = originalWarn;
+  });
 
-  expect(string).toBe('🚀');
-});
+  test('gets correct string for english', () => {
+    const string = getStringByLanguage('en', 'submit', testStrings);
 
-test('gets english string for word if language exists but provided string not found', () => {
-  const string = getStringByLanguage('orc', 'submit', testStrings);
+    expect(string).toBe('submit');
+    expect(mockWarn).not.toHaveBeenCalled();
+  });
 
-  expect(string).toBe('submit');
+  test('gets correct string for emoji', () => {
+    const string = getStringByLanguage('emoji', 'submit', testStrings);
+
+    expect(string).toBe('🚀');
+    expect(mockWarn).not.toHaveBeenCalled();
+  });
+
+  test('gets english string for word if language exists but provided string not found', () => {
+    const string = getStringByLanguage('orc', 'submit', testStrings);
+
+    expect(string).toBe('submit');
+    expect(mockWarn).toHaveBeenCalledWith(
+      `Could not get string [submit] for [orc]`
+    );
+  });
+
+  test('calls console.warn language exists but provided string not found', () => {
+    getStringByLanguage('orc', 'submit', testStrings);
+
+    expect(mockWarn).toHaveBeenCalledWith(
+      `Could not get string [submit] for [orc]`
+    );
+  });
 });
