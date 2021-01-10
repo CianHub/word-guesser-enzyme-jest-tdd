@@ -6,17 +6,17 @@ import languageContext from './context/languageContext';
 import { LanguagePicker } from './components/languagePicker/languagePicker';
 
 const reducer = (
-  state: { secretWord: string; language: string },
+  state: { secretWord: string; language: 'en' | 'emoji' | 'orc' },
   action: { type: string; payload: string }
 ): {
   secretWord: string;
-  language: string;
+  language: 'en' | 'emoji' | 'orc';
 } => {
   switch (action.type) {
     case 'setSecretWord':
       return { ...state, secretWord: action.payload };
     case 'setLanguage':
-      return { ...state, language: action.payload };
+      return { ...state, language: action.payload as 'en' | 'emoji' | 'orc' };
     default:
       return state;
   }
@@ -28,7 +28,7 @@ const App: React.FC = () => {
     language: 'en',
   });
 
-  const setLanguage = (lang: string): void =>
+  const setLanguage = (lang: 'en' | 'emoji' | 'orc'): void =>
     dispatch({ type: 'setLanguage', payload: lang });
 
   const setSecretWord = (secretWord: string): void =>

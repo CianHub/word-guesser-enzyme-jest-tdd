@@ -1,4 +1,6 @@
 import React from 'react';
+import languageContext from '../../context/languageContext';
+import languageModule from '../../helpers/strings';
 
 interface Props {
   secretWord: string;
@@ -6,6 +8,7 @@ interface Props {
 
 const Input: React.FC<Props> = ({ secretWord }) => {
   const [currentGuess, setCurrentGuess] = React.useState('');
+  const language = React.useContext(languageContext);
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -26,7 +29,10 @@ const Input: React.FC<Props> = ({ secretWord }) => {
           data-test="component-input-box"
           className="mb-2 mx-sm-3"
           type="text"
-          placeholder="Guess a word"
+          placeholder={languageModule.getStringByLanguage(
+            language,
+            'guessInputPlaceholder'
+          )}
         />
         <button
           type="submit"
@@ -36,7 +42,7 @@ const Input: React.FC<Props> = ({ secretWord }) => {
             handleSubmit(e)
           }
         >
-          Submit
+          {languageModule.getStringByLanguage(language, 'submit')}
         </button>
       </form>
     </div>

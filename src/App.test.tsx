@@ -1,8 +1,7 @@
 import React from 'react';
-import { mount, ReactWrapper, ShallowWrapper } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 
 import App from './App';
-import { findByTestAttr } from '../test/test-utils';
 import hookActions from './actions/hookActions';
 const mockGetSecretWord = jest.fn();
 
@@ -12,7 +11,9 @@ const setup = (
   mockGetSecretWord.mockClear();
   hookActions.getSecretWord = mockGetSecretWord;
 
-  const mockUseReducer = jest.fn().mockReturnValue([{ secretWord }, jest.fn()]);
+  const mockUseReducer = jest
+    .fn()
+    .mockReturnValue([{ secretWord, language: 'en' }, jest.fn()]);
   React.useReducer = mockUseReducer;
   return mount(<App />);
 };
