@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { GuessedWords, GuessedWord } from './GuessedWords';
 import { findByTestAttr } from '../../../test/test-utils';
+import { languageStrings } from '../../helpers/strings';
 
 const setup = (props: { guessedWords: GuessedWord[] }) =>
   shallow(<GuessedWords {...props} />);
@@ -51,5 +52,23 @@ describe('If  words guessed,', () => {
     });
     const comp = findByTestAttr(wrapper, 'guessed-word');
     expect(comp.length).toBe(3);
+  });
+});
+
+describe('language integraton', () => {
+  test('renders in english', () => {
+    const wrapper = setup({ guessedWords: [] });
+    const text = findByTestAttr(wrapper, 'instructions').text();
+
+    expect(text).toBe(languageStrings.en.guessPrompt);
+  });
+
+  test('renders in emoji', () => {
+    const mockUseContext = jest.fn().mockReturnValue('emoji');
+    React.useContext = mockUseContext;
+    const wrapper = setup({ guessedWords: [] });
+    const text = findByTestAttr(wrapper, 'instructions').text();
+
+    expect(text).toBe(languageStrings.emoji.guessPrompt);
   });
 });

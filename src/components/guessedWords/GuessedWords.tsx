@@ -1,4 +1,6 @@
 import React from 'react';
+import LanguageContext from '../../context/languageContext';
+import stringModule from '../../helpers/strings';
 
 export interface GuessedWord {
   guessedWord: string;
@@ -10,9 +12,11 @@ interface Props {
 }
 
 export const GuessedWords: React.FC<Props> = ({ guessedWords }) => {
+  const language = React.useContext(LanguageContext);
+
   let contents: JSX.Element = (
     <span data-test="component-instructions">
-      Try to guess the secret words
+      {stringModule.getStringByLanguage(language, 'guessPrompt')}
     </span>
   );
 
@@ -23,8 +27,14 @@ export const GuessedWords: React.FC<Props> = ({ guessedWords }) => {
         <table className="table table-sm">
           <thead className="thead-light">
             <tr>
-              <th>Guess</th>
-              <th>Matching Letters</th>
+              {stringModule.getStringByLanguage(language, 'guessColumnHeader')}
+
+              <th>
+                {stringModule.getStringByLanguage(
+                  language,
+                  'matchingLettersColumnHeader'
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>
