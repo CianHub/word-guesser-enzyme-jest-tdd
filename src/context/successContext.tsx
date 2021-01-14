@@ -1,6 +1,8 @@
 import React from 'react';
 
-const successContext = React.createContext<[boolean, () => {}] | null>(null);
+const successContext = React.createContext<
+  [boolean, (val: boolean) => void] | null
+>(null);
 
 const useSuccess = () => {
   const context = React.useContext(successContext);
@@ -13,7 +15,7 @@ const useSuccess = () => {
 };
 
 const SuccessProvider = (props: any) => {
-  const [success, setSuccess] = React.useState(false);
+  const [success, setSuccess] = React.useState<boolean>(false);
 
   const value = React.useMemo(() => [success, setSuccess], [success]);
 

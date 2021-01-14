@@ -1,5 +1,6 @@
 import React from 'react';
 import languageContext from '../../context/languageContext';
+import successContext from '../../context/successContext';
 import languageModule from '../../helpers/strings';
 
 interface Props {
@@ -9,14 +10,23 @@ interface Props {
 const Input: React.FC<Props> = ({ secretWord }) => {
   const [currentGuess, setCurrentGuess] = React.useState('');
   const language = React.useContext(languageContext);
+  const [success, setSuccess] = successContext.useSuccess();
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+
+    if (currentGuess === secretWord) {
+      setSuccess(true);
+    }
     setCurrentGuess('');
 
     //TODO update guessedWords context
     //TODO check if word === secretWord and update success context if so
   };
+
+  if (success) {
+    return null;
+  }
 
   return (
     <div data-test="component-input">
