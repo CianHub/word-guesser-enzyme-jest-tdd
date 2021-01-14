@@ -4,14 +4,20 @@ import { Congrats } from './congrats';
 import { findByTestAttr } from '../../../test/test-utils';
 import LanguageContext from '../../context/languageContext';
 import strings, { languageStrings } from '../../helpers/strings';
+import successContext from '../../context/successContext';
 
-const setup = (testValues: { success: boolean; language: string }) => {
+const setup = (testValues: {
+  success: boolean;
+  language: 'en' | 'emoji' | 'orc';
+}) => {
   testValues.language = testValues.language || 'en';
   testValues.success = testValues.success || false;
 
   return mount(
     <LanguageContext.Provider value={testValues.language}>
-      <Congrats success={testValues.success} />
+      <successContext.SuccessProvider value={[testValues.success, jest.fn()]}>
+        <Congrats />
+      </successContext.SuccessProvider>
     </LanguageContext.Provider>
   );
 };

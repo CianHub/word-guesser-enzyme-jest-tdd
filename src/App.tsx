@@ -4,6 +4,8 @@ import hookActions from './actions/hookActions';
 import Input from './components/input/Input';
 import languageContext from './context/languageContext';
 import { LanguagePicker } from './components/languagePicker/languagePicker';
+import successContext from './context/successContext';
+import { Congrats } from './components/congrats/congrats';
 
 const reducer = (
   state: { secretWord: string; language: 'en' | 'emoji' | 'orc' },
@@ -43,7 +45,10 @@ const App: React.FC = () => {
       <h1>Word Guesser</h1>
       <languageContext.Provider value={state.language}>
         <LanguagePicker setLanguage={setLanguage} />
-        <Input secretWord={state.secretWord} />
+        <successContext.SuccessProvider>
+          <Congrats />
+          <Input secretWord={state.secretWord} />
+        </successContext.SuccessProvider>
       </languageContext.Provider>
     </div>
   ) : (

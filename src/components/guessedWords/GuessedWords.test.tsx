@@ -1,18 +1,30 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { GuessedWords, GuessedWord } from './GuessedWords';
 import { findByTestAttr } from '../../../test/test-utils';
 import { languageStrings } from '../../helpers/strings';
+import guessedWordsContext from '../../context/guessedWordsContext';
+import languageContext from '../../context/languageContext';
 
-const setup = (props: { guessedWords: GuessedWord[] }) =>
-  shallow(<GuessedWords {...props} />);
+const setup = (
+  guessedWords: GuessedWord[],
+  lang: 'en' | 'emoji' | 'orc' = 'en'
+) => {
+  return mount(
+    <languageContext.Provider value={lang}>
+      <guessedWordsContext.GuessedWordsProvider
+        value={[guessedWords, jest.fn()]}
+      >
+        <GuessedWords />
+      </guessedWordsContext.GuessedWordsProvider>
+    </languageContext.Provider>
+  );
+};
 
 describe('If no words guessed,', () => {
   test('it should render', () => {
-    const wrapper = setup({
-      guessedWords: [],
-    });
-    const comp = findByTestAttr(wrapper, 'guessed-words');
+    const wrapper = setup([]);
+    const comp = wrapper.find(`[data-test='component-guessed-words']`);
     expect(comp.length).toBe(1);
   });
 
@@ -27,48 +39,39 @@ describe('If no words guessed,', () => {
 
 describe('If  words guessed,', () => {
   test('it should render', () => {
-    const wrapper = setup({
-      guessedWords: [{ guessedWord: 'train', letterMatchCount: 3 }],
-    });
-    const comp = findByTestAttr(wrapper, 'guessed-words');
+    const wrapper = setup([{ guessedWord: 'train', letterMatchCount: 3 }]);
+    const comp = wrapper.find(`[data-test='component-guessed-words']`);
     expect(comp.length).toBe(1);
   });
 
   test('it should render guessed word section', () => {
-    const wrapper = setup({
-      guessedWords: [{ guessedWord: 'train', letterMatchCount: 3 }],
-    });
-    const comp = findByTestAttr(wrapper, 'guessed-words-section');
+    const wrapper = setup([{ guessedWord: 'train', letterMatchCount: 3 }]);
+    const comp = wrapper.find(`[data-test='component-guessed-words-section']`);
     expect(comp.length).toBe(1);
   });
 
   test('it should render display correct number of words', () => {
-    const wrapper = setup({
-      guessedWords: [
-        { guessedWord: 'train', letterMatchCount: 3 },
-        { guessedWord: 'agile', letterMatchCount: 1 },
-        { guessedWord: 'party', letterMatchCount: 5 },
-      ],
-    });
-    const comp = findByTestAttr(wrapper, 'guessed-word');
+    const wrapper = setup([
+      { guessedWord: 'train', letterMatchCount: 3 },
+      { guessedWord: 'agile', letterMatchCount: 1 },
+      { guessedWord: 'party', letterMatchCount: 5 },
+    ]);
+    const comp = wrapper.find(`[data-test='component-guessed-word']`);
     expect(comp.length).toBe(3);
   });
 });
 
-describe('language integraton', () => {
+describe('language integration', () => {
   test('renders in english', () => {
-    const wrapper = setup({ guessedWords: [] });
-    const text = findByTestAttr(wrapper, 'instructions').text();
+    const wrapper = setup([]);
+    const text = wrapper.find(`[data-test='component-instructions']`).text();
 
     expect(text).toBe(languageStrings.en.guessPrompt);
   });
 
   test('renders in emoji', () => {
-    const mockUseContext = jest.fn().mockReturnValue('emoji');
-    React.useContext = mockUseContext;
-    const wrapper = setup({ guessedWords: [] });
-    const text = findByTestAttr(wrapper, 'instructions').text();
-
+    const wrapper = setup([], 'emoji');
+    const text = wrapper.find(`[data-test='component-instructions']`).text();
     expect(text).toBe(languageStrings.emoji.guessPrompt);
   });
 });
