@@ -2,10 +2,10 @@ import React from 'react';
 import { GuessedWord } from '../components/guessedWords/GuessedWords';
 
 const guessedWordsContext = React.createContext<
-  [GuessedWord[], (words: GuessedWord[]) => {}] | null
+  [GuessedWord[], (words: GuessedWord[]) => void] | null
 >(null);
 
-const useGuessedWords = () => {
+const useGuessedWords = (): [GuessedWord[], (words: GuessedWord[]) => void] => {
   const context = React.useContext(guessedWordsContext);
 
   if (!context) {
@@ -15,7 +15,7 @@ const useGuessedWords = () => {
   return context;
 };
 
-const GuessedWordsProvider = (props: any) => {
+const GuessedWordsProvider = (props: any): JSX.Element => {
   const [words, setWords] = React.useState<GuessedWord[]>([]);
 
   const value = React.useMemo(() => [words, setWords], [words]);

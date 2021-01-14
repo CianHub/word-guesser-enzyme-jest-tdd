@@ -24,8 +24,6 @@ const Input: React.FC<Props> = ({ secretWord }) => {
       { guessedWord: currentGuess, letterMatchCount },
     ];
 
-    console.log(newGuessedWords);
-
     setGuessedWords(newGuessedWords);
 
     if (currentGuess === secretWord) {

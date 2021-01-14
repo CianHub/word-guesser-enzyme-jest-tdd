@@ -4,7 +4,7 @@ const successContext = React.createContext<
   [boolean, (val: boolean) => void] | null
 >(null);
 
-const useSuccess = () => {
+const useSuccess = (): [boolean, (val: boolean) => void] => {
   const context = React.useContext(successContext);
 
   if (context === null) {
@@ -14,7 +14,7 @@ const useSuccess = () => {
   return context;
 };
 
-const SuccessProvider = (props: any) => {
+const SuccessProvider = (props: any): JSX.Element => {
   const [success, setSuccess] = React.useState<boolean>(false);
 
   const value = React.useMemo(() => [success, setSuccess], [success]);

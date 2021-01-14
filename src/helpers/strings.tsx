@@ -38,7 +38,7 @@ function getStringByLanguage(
   languageCode: keyof { en?: Language; emoji?: Language; orc?: string },
   stringKey: keyof Language,
   strings: typeof languageStrings = languageStrings
-) {
+): string | undefined {
   if (!strings[languageCode] || !strings[languageCode][stringKey]) {
     console.warn(`Could not get string [${stringKey}] for [${languageCode}]`);
 
