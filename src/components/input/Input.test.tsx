@@ -6,23 +6,24 @@ import React from 'react';
 import LanguageContext from '../../context/languageContext';
 import { languageStrings } from '../../helpers/strings';
 import successContext from '../../context/successContext';
+import guessedWordsContext from '../../context/guessedWordsContext';
 
 const setup = (testValues: {
   secretWord?: string;
   success?: boolean;
   language?: 'en' | 'emoji' | 'orc';
 }) => {
-  console.log(testValues);
-
   testValues.language = testValues.language || 'en';
   testValues.secretWord = testValues.secretWord || 'party';
   testValues.success = testValues.success ? true : false;
   return mount(
-    <LanguageContext.Provider value={testValues.language}>
-      <successContext.SuccessProvider value={[testValues.success, jest.fn()]}>
-        <Input secretWord={testValues.secretWord} />
-      </successContext.SuccessProvider>
-    </LanguageContext.Provider>
+    <guessedWordsContext.GuessedWordsProvider value={[[], jest.fn()]}>
+      <LanguageContext.Provider value={testValues.language}>
+        <successContext.SuccessProvider value={[testValues.success, jest.fn()]}>
+          <Input secretWord={testValues.secretWord} />
+        </successContext.SuccessProvider>
+      </LanguageContext.Provider>
+    </guessedWordsContext.GuessedWordsProvider>
   );
 };
 

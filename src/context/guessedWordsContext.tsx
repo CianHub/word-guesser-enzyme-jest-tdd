@@ -2,7 +2,7 @@ import React from 'react';
 import { GuessedWord } from '../components/guessedWords/GuessedWords';
 
 const guessedWordsContext = React.createContext<
-  [GuessedWord[], () => {}] | null
+  [GuessedWord[], (words: GuessedWord[]) => {}] | null
 >(null);
 
 const useGuessedWords = () => {

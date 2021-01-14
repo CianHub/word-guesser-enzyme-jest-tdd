@@ -1,7 +1,10 @@
 import React from 'react';
+import guessedWordsContext from '../../context/guessedWordsContext';
 import languageContext from '../../context/languageContext';
 import successContext from '../../context/successContext';
+import { getLetterMatchCount } from '../../helpers';
 import languageModule from '../../helpers/strings';
+import { GuessedWord } from '../guessedWords/GuessedWords';
 
 interface Props {
   secretWord: string;
@@ -11,9 +14,19 @@ const Input: React.FC<Props> = ({ secretWord }) => {
   const [currentGuess, setCurrentGuess] = React.useState('');
   const language = React.useContext(languageContext);
   const [success, setSuccess] = successContext.useSuccess();
+  const [guessedWords, setGuessedWords] = guessedWordsContext.useGuessedWords();
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    const letterMatchCount = getLetterMatchCount(currentGuess, secretWord);
+    const newGuessedWords: GuessedWord[] = [
+      ...guessedWords,
+      { guessedWord: currentGuess, letterMatchCount },
+    ];
+
+    console.log(newGuessedWords);
+
+    setGuessedWords(newGuessedWords);
 
     if (currentGuess === secretWord) {
       setSuccess(true);
